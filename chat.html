@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2 id="welcome"></h2>
+
+<div class="chatbox">
+    <h3>Public Chat</h3>
+    <ul id="publicMessages"></ul>
+
+    <input id="publicInput" placeholder="Type message...">
+    <button onclick="sendPublic()">Send</button>
+</div>
+
+<div class="chatbox">
+    <h3>Private Message</h3>
+
+    <input id="pmUser" placeholder="Send to user...">
+    <input id="pmText" placeholder="Message...">
+    <button onclick="sendPM()">Send PM</button>
+
+    <h3>Your Private Messages</h3>
+    <ul id="pmList"></ul>
+</div>
+
+<button onclick="clearAll()">Clear All Chats</button>
+
+<script src="chat.js"></script>
+</body>
+</html>

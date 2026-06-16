@@ -59,16 +59,6 @@ function sendPM() {
     renderPM();
 }
 
-// Clear everything
-function clearAll() {
-    localStorage.removeItem("publicChat");
-    localStorage.removeItem("privateChat");
-    publicChat = [];
-    privateChat = [];
-    renderPublic();
-    renderPM();
-}
-
 // Initial render
 renderPublic();
 renderPM();

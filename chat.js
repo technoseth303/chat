@@ -1,39 +1,74 @@
-// Load chat history from your computer
-let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+// Load current user
+const user = localStorage.getItem("currentUser");
+if (!user) location.href = "index.html";
 
-// Render chat messages
-function renderChat() {
-    const box = document.getElementById("messages");
+document.getElementById("welcome").textContent = "Logged in as: " + user;
+
+// Load stored chats
+let publicChat = JSON.parse(localStorage.getItem("publicChat")) || [];
+let privateChat = JSON.parse(localStorage.getItem("privateChat")) || [];
+
+// Render public chat
+function renderPublic() {
+    const box = document.getElementById("publicMessages");
     box.innerHTML = "";
 
-    chatHistory.forEach(msg => {
+    publicChat.forEach(msg => {
         const li = document.createElement("li");
-        li.textContent = msg;
+        li.textContent = msg.sender + ": " + msg.text;
         box.appendChild(li);
     });
 }
 
-// Save a new message
-function sendMessage() {
-    const input = document.getElementById("msgInput");
-    const text = input.value.trim();
+// Render private messages for this user
+function renderPM() {
+    const box = document.getElementById("pmList");
+    box.innerHTML = "";
+
+    privateChat
+        .filter(m => m.receiver === user)
+        .forEach(msg => {
+            const li = document.createElement("li");
+            li.textContent = msg.sender + " → you: " + msg.text;
+            box.appendChild(li);
+        });
+}
+
+// Send public message
+function sendPublic() {
+    const text = document.getElementById("publicInput").value.trim();
     if (!text) return;
 
-    chatHistory.push(text);
+    publicChat.push({ sender: user, text });
+    localStorage.setItem("publicChat", JSON.stringify(publicChat));
 
-    // Save to your computer
-    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-
-    input.value = "";
-    renderChat();
+    document.getElementById("publicInput").value = "";
+    renderPublic();
 }
 
-// Clear chat history
-function clearChat() {
-    localStorage.removeItem("chatHistory");
-    chatHistory = [];
-    renderChat();
+// Send private message
+function sendPM() {
+    const receiver = document.getElementById("pmUser").value.trim();
+    const text = document.getElementById("pmText").value.trim();
+    if (!receiver || !text) return;
+
+    privateChat.push({ sender: user, receiver, text });
+    localStorage.setItem("privateChat", JSON.stringify(privateChat));
+
+    document.getElementById("pmText").value = "";
+    renderPM();
 }
 
-// Load chat on page start
-window.onload = renderChat;
+// Clear everything
+function clearAll() {
+    localStorage.removeItem("publicChat");
+    localStorage.removeItem("privateChat");
+    publicChat = [];
+    privateChat = [];
+    renderPublic();
+    renderPM();
+}
+
+// Initial render
+renderPublic();
+renderPM();

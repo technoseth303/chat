@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Chat Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="box">
+    <h2>Login</h2>
+    <input id="username" placeholder="Enter username">
+    <button onclick="login()">Enter Chat</button>
+</div>
+
+<script>
+function login() {
+    const user = document.getElementById("username").value.trim();
+    if (!user) return;
+
+    localStorage.setItem("currentUser", user);
+    location.href = "chat.html";
+}
+</script>
+
+</body>
+</html>
